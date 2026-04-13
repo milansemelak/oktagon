@@ -697,80 +697,82 @@ body {
   text-align: center;
 }
 
-/* --- Narrative options --- */
-.narrative-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* --- Narrative section --- */
+.narrative-section {
+  margin-bottom: 16px;
+}
+
+.narrative-section .card-title {
   margin-bottom: 20px;
 }
 
-.narrative-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  background: var(--bg-card-alt);
-  transition: all 0.2s;
-}
-
-.narrative-option.selected {
-  border-color: var(--accent);
+.narrative-selected {
+  padding: 28px 24px;
+  border: 2px solid var(--accent);
   background: var(--accent-dim);
+  margin-bottom: 16px;
+  text-align: center;
 }
 
-.narrative-option-num {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-
-.narrative-option.selected .narrative-option-num {
-  color: var(--accent);
-}
-
-.narrative-option-text {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  flex: 1;
-}
-
-.narrative-option.selected .narrative-option-text {
-  color: var(--accent);
-  font-size: 20px;
-}
-
-.narrative-option-badge {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 3px 8px;
-  flex-shrink: 0;
-}
-
-.narrative-why {
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-
-.narrative-why-label {
+.narrative-selected-label {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 2px;
   color: var(--text-muted);
-  margin-right: 8px;
+  display: block;
+  margin-bottom: 12px;
 }
 
-.narrative-why-text {
+.narrative-selected-text {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.narrative-selected-why {
   font-size: 13px;
   color: var(--text-dim);
+}
+
+.narrative-alts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.narrative-alt-chip {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  text-transform: uppercase;
+}
+
+.narrative-shuffle-btn {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.narrative-shuffle-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* --- Score note (change capped) --- */
@@ -1052,11 +1054,9 @@ body {
   .diagnosis-card { padding: 16px; }
   .diagnosis-text { font-size: 14px; }
 
-  .narrative-card { padding: 24px 16px; }
-  .narrative-option-text { font-size: 14px; }
-  .narrative-option.selected .narrative-option-text { font-size: 15px; }
-  .narrative-option { padding: 12px 14px; }
-  .narrative-option-badge { font-size: 8px; padding: 2px 6px; }
+  .narrative-selected { padding: 20px 16px; }
+  .narrative-selected-text { font-size: 22px; }
+  .narrative-alt-chip { font-size: 11px; padding: 6px 12px; }
 
   .scores-card, .summary-card, .reality-card,
   .analysis-card, .fix-card {

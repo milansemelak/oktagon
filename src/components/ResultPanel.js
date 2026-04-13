@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { generateNarrativeOptions, generateNarrative } from './scoringLogic';
 
 function CopyButton({ text, label }) {
   const [copied, setCopied] = useState(false);
@@ -31,6 +32,42 @@ function ScoreBar({ label, score, level, comment, note }) {
   );
 }
 
+function NarrativeSection({ initialOptions, project, fear, fearScore }) {
+  const [narratives, setNarratives] = useState(initialOptions);
+
+  const handleShuffle = () => {
+    const primary = generateNarrative(project, fear, fearScore);
+    const newOptions = generateNarrativeOptions(project, fear, primary, fearScore);
+    setNarratives(newOptions);
+  };
+
+  const { options, selected, whyItWins } = narratives;
+
+  return (
+    <div className="narrative-section">
+      <h3 className="card-title">FYF NARRATIVES</h3>
+
+      {/* Selected / strongest */}
+      <div className="narrative-selected">
+        <span className="narrative-selected-label">STRONGEST</span>
+        <p className="narrative-selected-text">{selected.narrative}</p>
+        <p className="narrative-selected-why">{whyItWins}</p>
+      </div>
+
+      {/* Alternatives */}
+      <div className="narrative-alts">
+        {options.filter(o => o.narrative !== selected.narrative).map((opt, i) => (
+          <span className="narrative-alt-chip" key={i}>{opt.narrative}</span>
+        ))}
+      </div>
+
+      <button className="narrative-shuffle-btn" onClick={handleShuffle}>
+        SHUFFLE NARRATIVES
+      </button>
+    </div>
+  );
+}
+
 export default function ResultPanel({ result, onReset }) {
   if (!result) return null;
 
@@ -39,16 +76,14 @@ export default function ResultPanel({ result, onReset }) {
     scores, feedback, changeNote, reality, input,
   } = result;
 
-  const { options, selected, whyItWins } = narrativeOptions;
-
   const fullText = [
     `FYF ANALYSIS — ${project}`,
     ``,
     `DECISION: ${decision}`,
     `${reason}`,
     ``,
-    `SELECTED NARRATIVE: ${selected.narrative}`,
-    options.length > 1 ? `OPTIONS: ${options.map((o, i) => `${i + 1}. ${o.narrative}`).join(' | ')}` : '',
+    `SELECTED NARRATIVE: ${narrativeOptions.selected.narrative}`,
+    `OPTIONS: ${narrativeOptions.options.map((o, i) => `${i + 1}. ${o.narrative}`).join(' | ')}`,
     ``,
     `01 — FIND THE FEAR (${scores.fear.score}/5): ${input.fear}`,
     `02 — MAKE THEM FACE IT (${scores.facing.score}/5): ${input.facing}`,
@@ -74,28 +109,13 @@ export default function ResultPanel({ result, onReset }) {
           <p className="diagnosis-text">{reason}</p>
         </div>
 
-        {/* === FYF NARRATIVES (3 options) === */}
-        <div className="narrative-card">
-          <h3 className="card-title">04 — FYF NARRATIVES</h3>
-          <div className="narrative-options">
-            {options.map((opt, i) => (
-              <div
-                className={`narrative-option ${opt.narrative === selected.narrative ? 'selected' : ''}`}
-                key={i}
-              >
-                <span className="narrative-option-num">0{i + 1}</span>
-                <span className="narrative-option-text">{opt.narrative}</span>
-                {opt.narrative === selected.narrative && (
-                  <span className="narrative-option-badge">STRONGEST</span>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="narrative-why">
-            <span className="narrative-why-label">WHY IT WINS:</span>
-            <span className="narrative-why-text">{whyItWins}</span>
-          </div>
-        </div>
+        {/* === FYF NARRATIVES === */}
+        <NarrativeSection
+          initialOptions={narrativeOptions}
+          project={project}
+          fear={input.fear}
+          fearScore={scores.fear.score}
+        />
 
         {/* === PILLAR SCORES === */}
         <div className="scores-card">

@@ -523,3 +523,5 @@ export function evaluate({ project, fear, facing, change }) {
     },
   };
 }
+
+export { generateNarrativeOptions, generateNarrative, scoreNarrative };
