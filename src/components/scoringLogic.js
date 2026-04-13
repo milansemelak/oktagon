@@ -401,50 +401,66 @@ function makeDecision(fearScore, facingScore, changeScore, fear, facing, change,
 // --- REALITY CHECK ---
 
 function realityCheck(project, fear, facing, change, fearScore, facingScore, changeScore) {
-  const checks = [];
+  const issues = [];
   const pl = project.toLowerCase();
   const fl = fear.toLowerCase().trim();
   const facl = facing.toLowerCase().trim();
   const cl = change.toLowerCase().trim();
 
-  // Is the fear actually tied to the project?
+  // Check: is fear real?
+  const fearReal = fearScore >= 3;
+  if (!fearReal) issues.push('Fear is not real or specific enough.');
+
+  // Check: is facing unavoidable?
+  const facingPassive = FACING_WEAK.some(w => facl.includes(w));
+  const facingReal = facingScore >= 3 && !facingPassive;
+  if (!facingReal) {
+    if (facingPassive) issues.push('People can avoid this situation. Watching, buying, or scrolling is not facing.');
+    else if (facingScore < 3) issues.push('No real facing moment. Where is the confrontation?');
+  }
+
+  // Check: is change visible?
+  const changeInternal = CHANGE_WEAK.some(w => cl.includes(w));
+  const changeReal = changeScore >= 3 && !changeInternal;
+  if (!changeReal) {
+    if (changeInternal) issues.push('Nothing visibly changes. Internal feelings are not proof.');
+    else if (changeScore < 3) issues.push('No visible warrior. What do they do differently?');
+  }
+
+  // Product check
   const productWords = ['merch', 'drop', 'hoodie', 'shirt', 'gear', 'collection', 'product'];
-  const isProduct = productWords.some(w => pl.includes(w));
-  if (isProduct && fearScore >= 3) {
-    checks.push({ type: 'warning', label: 'PROJECT FIT', msg: 'This is a product. How does buying or wearing something actually force someone to face this fear? Products don\'t create confrontation by default.' });
+  if (productWords.some(w => pl.includes(w)) && fearScore >= 3) {
+    issues.push('This is a product. Products don\'t force confrontation by default.');
   }
 
-  // Is the facing mechanism passive?
-  if (facingScore >= 3 && FACING_WEAK.some(w => facl.includes(w))) {
-    checks.push({ type: 'warning', label: 'PASSIVE FACING', msg: 'The mechanism described is passive. Watching, scrolling, or buying is not facing. Where is the actual confrontation?' });
-  }
-
-  // Is the change internal-only?
-  if (changeScore >= 3 && CHANGE_WEAK.some(w => cl.includes(w))) {
-    checks.push({ type: 'warning', label: 'INVISIBLE CHANGE', msg: 'The change described is internal. If you can\'t observe it from the outside, it\'s not a real change for FYF purposes.' });
-  }
-
-  // Disconnect: big change claimed from weak facing
+  // Disconnect
   if (changeScore >= 4 && facingScore <= 2) {
-    checks.push({ type: 'warning', label: 'DISCONNECT', msg: 'Big transformation claimed but no real facing mechanism to produce it. Change without confrontation is wishful thinking.' });
+    issues.push('Big warrior claimed but no real confrontation to produce it.');
   }
 
-  // All strong but answers are suspiciously short
+  // Surface level
   if (fearScore >= 3 && facingScore >= 3 && changeScore >= 3) {
     const allShort = fl.split(/\s+/).length <= 3 && facl.split(/\s+/).length <= 3 && cl.split(/\s+/).length <= 3;
-    if (allShort) {
-      checks.push({ type: 'warning', label: 'SURFACE LEVEL', msg: 'Right keywords, but too compressed. This reads like formula-filling, not real analysis. Unpack each section.' });
-    }
+    if (allShort) issues.push('Reads like formula-filling, not real analysis. Unpack it.');
   }
 
-  // All good
-  if (checks.length === 0 && (fearScore + facingScore + changeScore) >= 10) {
-    checks.push({ type: 'pass', label: 'GROUNDED', msg: 'This holds up. The fear, facing mechanism, and change are connected and grounded in the project.' });
-  } else if (checks.length === 0) {
-    checks.push({ type: 'neutral', label: 'REVIEW', msg: 'No major red flags, but the analysis could be sharper across all sections.' });
+  // Determine verdict: GROUNDED / WEAK / BROKEN
+  let verdict, verdictClass, explanation;
+  if (issues.length === 0 && fearReal && facingReal && changeReal) {
+    verdict = 'GROUNDED';
+    verdictClass = 'grounded';
+    explanation = 'This forces confrontation. The fear is real, facing is unavoidable, and the change is visible.';
+  } else if ((!fl && !facl) || (!fearReal && !facingReal) || fearScore <= 1 || facingScore <= 1) {
+    verdict = 'BROKEN';
+    verdictClass = 'broken';
+    explanation = issues[0] || 'No real fear or no real facing. The system does not hold.';
+  } else {
+    verdict = 'WEAK';
+    verdictClass = 'weak-verdict';
+    explanation = issues[0] || 'Something is missing. The system does not fully hold.';
   }
 
-  return checks;
+  return { verdict, verdictClass, explanation, issues };
 }
 
 // --- Main evaluate function ---
@@ -482,7 +498,7 @@ export function evaluate({ project, fear, facing, change }) {
   const bestNarrativeScore = scoreNarrative(narrativeOptions.selected.narrative);
 
   const decision = makeDecision(fearResult.score, facingResult.score, changeResult.score, fear, facing, change, bestNarrativeScore.score);
-  const checks = realityCheck(project, fear, facing, change, fearResult.score, facingResult.score, changeResult.score);
+  const reality = realityCheck(project, fear, facing, change, fearResult.score, facingResult.score, changeResult.score);
 
   return {
     project,
@@ -499,7 +515,7 @@ export function evaluate({ project, fear, facing, change }) {
       change: changeFeedback,
     },
     changeNote,
-    realityChecks: checks,
+    reality,
     input: {
       fear: fear.trim() || '—',
       facing: facing.trim() || '—',

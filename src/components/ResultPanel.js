@@ -36,7 +36,7 @@ export default function ResultPanel({ result, onReset }) {
 
   const {
     project, narrativeOptions, decision, decisionClass, reason,
-    scores, feedback, changeNote, realityChecks, input,
+    scores, feedback, changeNote, reality, input,
   } = result;
 
   const { options, selected, whyItWins } = narrativeOptions;
@@ -54,6 +54,9 @@ export default function ResultPanel({ result, onReset }) {
     `02 — MAKE THEM FACE IT (${scores.facing.score}/5): ${input.facing}`,
     `03 — UNLEASH THE WARRIOR (${scores.change.score}/5): ${input.change}`,
     changeNote ? `NOTE: ${changeNote}` : '',
+    ``,
+    `REALITY CHECK: ${reality.verdict}`,
+    `${reality.explanation}`,
   ].filter(Boolean).join('\n');
 
   return (
@@ -120,19 +123,22 @@ export default function ResultPanel({ result, onReset }) {
         </div>
 
         {/* === REALITY CHECK === */}
-        <div className="reality-card">
+        <div className={`reality-card ${reality.verdictClass}`}>
           <h3 className="card-title">REALITY CHECK</h3>
-          {realityChecks.map((check, i) => (
-            <div className={`reality-item ${check.type}`} key={i}>
-              <span className="reality-icon">
-                {check.type === 'pass' ? '✓' : check.type === 'warning' ? '!' : '—'}
-              </span>
-              <div>
-                <span className="reality-pillar">{check.label}</span>
-                <span className="reality-msg">{check.msg}</span>
-              </div>
+          <div className="reality-verdict-row">
+            <span className={`reality-verdict ${reality.verdictClass}`}>{reality.verdict}</span>
+            <span className="reality-explanation">{reality.explanation}</span>
+          </div>
+          {reality.issues.length > 0 && reality.verdict !== 'GROUNDED' && (
+            <div className="reality-issues">
+              {reality.issues.map((issue, i) => (
+                <div className="reality-issue" key={i}>
+                  <span className="reality-issue-icon">!</span>
+                  <span>{issue}</span>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
 
         {/* === HOW TO FIX === */}

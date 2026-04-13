@@ -869,6 +869,65 @@ body {
 
 .reality-item.pass .reality-msg { color: var(--green); }
 
+/* Reality verdict: GROUNDED / WEAK / BROKEN */
+.reality-verdict-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.reality-verdict {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding: 4px 12px;
+  flex-shrink: 0;
+}
+
+.reality-verdict.grounded { color: var(--green); border: 1px solid var(--green); }
+.reality-verdict.weak-verdict { color: var(--accent); border: 1px solid var(--accent); }
+.reality-verdict.broken { color: var(--red); border: 1px solid var(--red); }
+
+.reality-card.grounded { border-left-color: var(--green); }
+.reality-card.weak-verdict { border-left-color: var(--accent); }
+.reality-card.broken { border-left-color: var(--red); }
+
+.reality-explanation {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  padding-top: 4px;
+}
+
+.reality-issues {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.reality-issue {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+  padding: 6px 0;
+}
+
+.reality-issue-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 50%;
+  background: var(--red-dim);
+  color: var(--red);
+}
+
 /* --- SHARP FEEDBACK --- */
 .strong-item { color: var(--green); }
 .weak-item { color: var(--red); }
