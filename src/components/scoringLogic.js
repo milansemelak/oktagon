@@ -511,9 +511,13 @@ export function evaluate({ project, fear, facing, change }) {
   // CORE MODEL: CHANGE is capped by the weaker of FEAR and FACING
   // If FEAR is weak → CHANGE will be weak regardless of what's written
   // If FACING is missing → CHANGE won't happen
+  // Store uncapped change score for comparison
+  const uncappedChangeScore = changeResult.score;
+
+  // CORE MODEL: CHANGE is capped by the weaker of FEAR and FACING
   const fearFacingMin = Math.min(fearResult.score, facingResult.score);
   if (changeResult.score > fearFacingMin + 1) {
-    changeResult.score = fearFacingMin + 1;
+    changeResult.score = Math.min(fearFacingMin + 1, 5);
     changeResult.level = changeResult.score >= 4 ? 'strong' : changeResult.score >= 3 ? 'mid' : 'weak';
   }
 
@@ -521,9 +525,9 @@ export function evaluate({ project, fear, facing, change }) {
   const facingFeedback = getFacingFeedback(facing, facingResult.score);
   const changeFeedback = getChangeFeedback(change, changeResult.score);
 
-  // If change is capped, override feedback
+  // If change was capped, explain why
   let changeNote = null;
-  if (changeResult.score < scorePillar(change, CHANGE_STRONG, CHANGE_WEAK).score) {
+  if (changeResult.score < uncappedChangeScore) {
     if (fearResult.score <= 2) changeNote = 'Change is capped because the fear is too weak. Stronger fear = stronger change.';
     else if (facingResult.score <= 2) changeNote = 'Change is capped because the facing mechanism is missing. No confrontation = no transformation.';
     else changeNote = 'Change is limited by the strength of fear and facing combined.';
