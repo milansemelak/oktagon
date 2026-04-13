@@ -50,18 +50,24 @@ function ScoreBar({ label, score, level, comment, note }) {
 
 function NarrativeSection({ initialOptions, project, fear, fearScore }) {
   const [narratives, setNarratives] = useState(initialOptions);
+  const [shuffleCount, setShuffleCount] = useState(0);
 
   const handleShuffle = () => {
+    const nextShuffle = shuffleCount + 1;
     const primary = generateNarrative(project, fear, fearScore);
-    const newOptions = generateNarrativeOptions(project, fear, primary, fearScore);
+    const newOptions = generateNarrativeOptions(project, fear, primary, fearScore, nextShuffle);
     setNarratives(newOptions);
+    setShuffleCount(nextShuffle);
   };
 
   const { options, selected, whyItWins } = narratives;
 
+  const lensLabels = ['SIGNATURE LINES', 'ALTERNATIVE ANGLES', 'BOLD LINES'];
+  const currentLens = lensLabels[shuffleCount % 3];
+
   return (
     <div className="narrative-section">
-      <h3 className="card-title">FYF NARRATIVES</h3>
+      <h3 className="card-title">CAMPAIGN LINES</h3>
 
       {/* Selected / strongest */}
       <div className="narrative-selected">
@@ -78,7 +84,7 @@ function NarrativeSection({ initialOptions, project, fear, fearScore }) {
       </div>
 
       <button className="narrative-shuffle-btn" onClick={handleShuffle}>
-        SHUFFLE NARRATIVES
+        SHUFFLE — {currentLens}
       </button>
     </div>
   );
@@ -173,7 +179,7 @@ export default function ResultPanel({ result, onReset }) {
     `DECISION: ${decision}`,
     `${reason}`,
     ``,
-    `SELECTED NARRATIVE: ${narrativeOptions.selected.narrative}`,
+    `CAMPAIGN LINE: ${narrativeOptions.selected.narrative}`,
     `OPTIONS: ${narrativeOptions.options.map((o, i) => `${i + 1}. ${o.narrative}`).join(' | ')}`,
     ``,
     `01 — FIND THE FEAR (${scores.fear.score}/5): ${input.fear}`,
@@ -200,7 +206,7 @@ export default function ResultPanel({ result, onReset }) {
           <p className="diagnosis-text">{reason}</p>
         </div>
 
-        {/* === FYF NARRATIVES === */}
+        {/* === CAMPAIGN LINES === */}
         <NarrativeSection
           initialOptions={narrativeOptions}
           project={project}

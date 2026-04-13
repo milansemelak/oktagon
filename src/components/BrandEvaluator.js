@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import FearLibrary from './FearLibrary';
-
-const DEMO = {
-  project: 'OKTAGON GYM',
-  fear: 'being the weakest person in the room and having no excuse left',
-  facing: 'you walk into a real gym, stand in front of a bag, and box for 90 minutes — no hiding, no shortcuts',
-  change: 'you stop negotiating with your own excuses and start showing up',
-};
+import { getProjectContext } from './scoringLogic';
 
 export default function BrandEvaluator({ onSubmit }) {
   const [project, setProject] = useState('');
   const [fear, setFear] = useState('');
   const [facing, setFacing] = useState('');
   const [change, setChange] = useState('');
+
+  const context = getProjectContext(project);
 
   const handleFearSelect = (f) => setFear(f);
 
@@ -22,10 +18,11 @@ export default function BrandEvaluator({ onSubmit }) {
   };
 
   const handleDemo = () => {
-    setProject(DEMO.project);
-    setFear(DEMO.fear);
-    setFacing(DEMO.facing);
-    setChange(DEMO.change);
+    const demo = context.demo;
+    setProject(demo.project);
+    setFear(demo.fear);
+    setFacing(demo.facing);
+    setChange(demo.change);
   };
 
   return (
@@ -58,10 +55,10 @@ export default function BrandEvaluator({ onSubmit }) {
                 <span className="q-number">01</span>
                 FIND THE FEAR
               </label>
-              <span className="input-helper">What is the real fear people would avoid?</span>
+              <span className="input-helper">{context.helpers.fear}</span>
               <textarea
                 className="field textarea"
-                placeholder="being the weakest in the room..."
+                placeholder={context.placeholders.fear}
                 value={fear}
                 onChange={e => setFear(e.target.value)}
                 rows={2}
@@ -75,10 +72,10 @@ export default function BrandEvaluator({ onSubmit }) {
                 <span className="q-number">02</span>
                 MAKE THEM FACE IT
               </label>
-              <span className="input-helper">How does the project force confrontation?</span>
+              <span className="input-helper">{context.helpers.facing}</span>
               <textarea
                 className="field textarea"
-                placeholder="walk in and box for 90 minutes..."
+                placeholder={context.placeholders.facing}
                 value={facing}
                 onChange={e => setFacing(e.target.value)}
                 rows={2}
@@ -91,10 +88,10 @@ export default function BrandEvaluator({ onSubmit }) {
                 <span className="q-number">03</span>
                 UNLEASH THE WARRIOR
               </label>
-              <span className="input-helper">Who do they become? Before → After.</span>
+              <span className="input-helper">{context.helpers.change}</span>
               <textarea
                 className="field textarea"
-                placeholder="stops making excuses, starts showing up..."
+                placeholder={context.placeholders.change}
                 value={change}
                 onChange={e => setChange(e.target.value)}
                 rows={2}

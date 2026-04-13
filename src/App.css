@@ -728,9 +728,9 @@ body {
 }
 
 .narrative-alts {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 8px;
-  flex-wrap: wrap;
   margin-bottom: 16px;
 }
 
@@ -739,10 +739,11 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--text-muted);
-  padding: 8px 16px;
+  padding: 10px 16px;
   border: 1px solid var(--border);
   background: var(--bg-card);
   text-transform: uppercase;
+  text-align: center;
 }
 
 .narrative-shuffle-btn {
@@ -1150,7 +1151,8 @@ body {
 
   .narrative-selected { padding: 20px 16px; }
   .narrative-selected-text { font-size: 22px; }
-  .narrative-alt-chip { font-size: 11px; padding: 6px 12px; }
+  .narrative-alts { grid-template-columns: 1fr; }
+  .narrative-alt-chip { font-size: 11px; padding: 8px 12px; }
 
   .scores-card, .summary-card, .reality-card,
   .analysis-card, .fix-card {
