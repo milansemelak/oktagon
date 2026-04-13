@@ -1071,19 +1071,31 @@ export function getProjectContext(projectName) {
   return PROJECT_CONTEXT[type];
 }
 
+// Curated strongest campaign lines per project type for the rewrite
+const REWRITE_NARRATIVES = {
+  gym: 'Face Your Weakness',
+  content: 'Face Your Uncut Story',
+  product: 'Face Your Label',
+  event: 'Face The Cage',
+  digital: 'Face Your Public Record',
+  beer: 'Face Your Taste',
+  food: 'Face Your Plate',
+  academy: 'Face Your First Session',
+  default: 'Face Your Silence',
+};
+
 export function generateRewrite(project, fear, facing, change) {
   const type = detectProjectType(project);
 
   const intent = `Make people face ${fear.trim() || 'something real'} through ${project}`;
 
-  // Generate campaign lines based on the stronger rewritten fear
-  const rewrittenFear = REWRITE_FEARS[type];
-  const primaryNarrative = generateNarrative(project, rewrittenFear, 4);
-  const campaignLines = generateNarrativeOptions(project, rewrittenFear, primaryNarrative, 4);
+  // Use curated primary + generate alternatives from original user fear
+  const primaryNarrative = REWRITE_NARRATIVES[type];
+  const campaignLines = generateNarrativeOptions(project, fear, primaryNarrative, 4);
 
   return {
     intent,
-    fear: rewrittenFear,
+    fear: REWRITE_FEARS[type],
     facingMoment: REWRITE_FACINGS[type],
     facingSystem: REWRITE_SYSTEMS[type],
     warrior: REWRITE_WARRIORS[type],
