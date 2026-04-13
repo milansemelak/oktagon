@@ -184,7 +184,6 @@ const NOUNIFY = {
   'ashamed': 'Shame', 'shameful': 'Shame',
   'silent': 'Silence', 'quiet': 'Silence',
   'comfortable': 'Comfort', 'soft': 'Softness',
-  'ordinary': 'Mediocrity', 'average': 'Mediocrity', 'mediocre': 'Mediocrity',
   'invisible': 'Invisibility', 'unseen': 'Invisibility',
   'irrelevant': 'Irrelevance', 'forgotten': 'Irrelevance',
   'fake': 'Fraud', 'phony': 'Fraud',
