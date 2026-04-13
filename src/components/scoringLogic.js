@@ -499,6 +499,71 @@ function realityCheck(project, fear, facing, change, fearScore, facingScore, cha
   return { verdict, verdictClass, explanation, issues };
 }
 
+// --- REWRITE GENERATOR ---
+// Turns weak inputs into stronger, situational versions
+
+const REWRITE_FEARS = {
+  gym: 'Standing in a boxing gym for the first time, surrounded by people who train every day, knowing you have nothing to prove except that you showed up',
+  content: 'Sitting in front of a camera and telling a story you\'ve never told anyone — knowing it will be public',
+  product: 'Wearing something that says you belong in the cage when everyone can see you\'ve never been in one',
+  event: 'Walking into an arena where thousands are watching and the outcome is permanent',
+  digital: 'Locking your prediction in public before the fight, knowing everyone will see if you\'re wrong',
+  default: 'Being in a room where everyone can see what you\'re really made of — and you can\'t fake it',
+};
+
+const REWRITE_FACINGS = {
+  gym: 'The moment you walk through the door, put on gloves, and step in front of the bag — with everyone around you already moving',
+  content: 'The moment the camera starts recording and there\'s no script, no edit, just you',
+  product: 'The moment you put it on and walk into a place where people who actually train will see you',
+  event: 'The walk-in. The lights. The cage door closing behind you.',
+  digital: 'The moment you hit submit and your name is on it — publicly, permanently, before the outcome',
+  default: 'The moment you step in and the option to back out disappears',
+};
+
+const REWRITE_SYSTEMS = {
+  gym: 'Every session is public. You train alongside others. Your effort is visible. You can\'t fake reps.',
+  content: 'The series continues. Each episode is a new confrontation. The audience is watching.',
+  product: 'The product marks you. It\'s not fashion — it\'s a claim. People notice.',
+  event: 'The card is set. The fight happens. There\'s no rescheduling reality.',
+  digital: 'New fights, new picks, new exposure. Every week your judgment is tested publicly.',
+  default: 'The system repeats. Each round is a new moment of exposure. No hiding between rounds.',
+};
+
+const REWRITE_WARRIORS = {
+  gym: { before: 'Talked about getting in shape but never showed up', after: 'Shows up 3x a week and trains where people can see', proof: 'They\'re in the gym. Regularly. Visibly.' },
+  content: { before: 'Kept the story private, avoided the uncomfortable parts', after: 'Told it publicly, on camera, without filtering', proof: 'The content exists. People watched it. It\'s real.' },
+  product: { before: 'Wore what was safe and anonymous', after: 'Wears something that makes a visible statement about identity', proof: 'You can see it on them. It\'s a choice that\'s public.' },
+  event: { before: 'Watched from the outside, judged from the stands', after: 'Stepped in, performed, accepted the outcome publicly', proof: 'They competed. The result is on record.' },
+  digital: { before: 'Had opinions but never put them on the line', after: 'Locks picks publicly every week, stands behind them', proof: 'Their record is public. Right or wrong, it\'s there.' },
+  default: { before: 'Avoided the situation, stayed comfortable', after: 'Stepped in repeatedly, accepted exposure', proof: 'Their behavior changed visibly. Others noticed.' },
+};
+
+function detectProjectType(project) {
+  const pl = project.toLowerCase();
+  if (['gym', 'training', 'box', 'fitness', 'workout'].some(w => pl.includes(w))) return 'gym';
+  if (['documentary', 'film', 'series', 'show', 'podcast', 'video', 'comeback', 'story'].some(w => pl.includes(w))) return 'content';
+  if (['merch', 'drop', 'hoodie', 'shirt', 'gear', 'collection'].some(w => pl.includes(w))) return 'product';
+  if (['event', 'tournament', 'fight night', 'gala', 'card', 'ppv'].some(w => pl.includes(w))) return 'event';
+  if (['app', 'fantasy', 'league', 'game', 'platform', 'digital', 'pick'].some(w => pl.includes(w))) return 'digital';
+  return 'default';
+}
+
+export function generateRewrite(project, fear, facing, change) {
+  const type = detectProjectType(project);
+
+  const intent = `Make people face ${fear.trim() || 'something real'} through ${project}`;
+
+  return {
+    intent,
+    fear: REWRITE_FEARS[type],
+    facingMoment: REWRITE_FACINGS[type],
+    facingSystem: REWRITE_SYSTEMS[type],
+    warrior: REWRITE_WARRIORS[type],
+    verdict: 'WORKS',
+    verdictReason: 'The fear is situational, the exposure is unavoidable, and the change is visible.',
+  };
+}
+
 // --- Main evaluate function ---
 // CORE MODEL: FEAR × FACING = CHANGE
 // Change quality is derived from FEAR and FACING strength

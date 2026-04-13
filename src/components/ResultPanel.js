@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateNarrativeOptions, generateNarrative } from './scoringLogic';
+import { generateNarrativeOptions, generateNarrative, generateRewrite } from './scoringLogic';
 
 function CopyButton({ text, label }) {
   const [copied, setCopied] = useState(false);
@@ -80,6 +80,81 @@ function NarrativeSection({ initialOptions, project, fear, fearScore }) {
       <button className="narrative-shuffle-btn" onClick={handleShuffle}>
         SHUFFLE NARRATIVES
       </button>
+    </div>
+  );
+}
+
+function RewriteSection({ project, fear, facing, change }) {
+  const [rewrite, setRewrite] = useState(null);
+
+  const handleRewrite = () => {
+    setRewrite(generateRewrite(project, fear, facing, change));
+  };
+
+  if (!rewrite) {
+    return (
+      <button className="rewrite-trigger-btn" onClick={handleRewrite}>
+        MAKE IT STRONGER
+      </button>
+    );
+  }
+
+  const rewriteText = [
+    `STRONGER VERSION — ${project}`,
+    ``,
+    `INTENT: ${rewrite.intent}`,
+    ``,
+    `FEAR: ${rewrite.fear}`,
+    `FACING MOMENT: ${rewrite.facingMoment}`,
+    `FACING SYSTEM: ${rewrite.facingSystem}`,
+    ``,
+    `WARRIOR:`,
+    `Before: ${rewrite.warrior.before}`,
+    `After: ${rewrite.warrior.after}`,
+    `Proof: ${rewrite.warrior.proof}`,
+    ``,
+    `VERDICT: ${rewrite.verdict}`,
+    `${rewrite.verdictReason}`,
+  ].join('\n');
+
+  return (
+    <div className="rewrite-result">
+      <div className="rewrite-result-header">
+        <h3 className="card-title">STRONGER VERSION</h3>
+        <CopyButton text={rewriteText} label="COPY" />
+      </div>
+
+      <div className="rewrite-block">
+        <span className="rewrite-label">INTENT</span>
+        <p className="rewrite-value">{rewrite.intent}</p>
+      </div>
+
+      <div className="rewrite-block">
+        <span className="rewrite-label">THE FEAR</span>
+        <p className="rewrite-value rewrite-highlight">{rewrite.fear}</p>
+      </div>
+
+      <div className="rewrite-block">
+        <span className="rewrite-label">FACING MOMENT</span>
+        <p className="rewrite-value">{rewrite.facingMoment}</p>
+      </div>
+
+      <div className="rewrite-block">
+        <span className="rewrite-label">THE FACING</span>
+        <p className="rewrite-value">{rewrite.facingSystem}</p>
+      </div>
+
+      <div className="rewrite-block">
+        <span className="rewrite-label">THE WARRIOR</span>
+        <p className="rewrite-before-after"><strong>Before:</strong> {rewrite.warrior.before}</p>
+        <p className="rewrite-before-after"><strong>After:</strong> {rewrite.warrior.after}</p>
+        <p className="rewrite-before-after rewrite-proof"><strong>Proof:</strong> {rewrite.warrior.proof}</p>
+      </div>
+
+      <div className={`rewrite-verdict ${rewrite.verdict === 'WORKS' ? 'works' : rewrite.verdict === 'CLOSE' ? 'close' : 'broken'}`}>
+        <span className="rewrite-verdict-label">{rewrite.verdict}</span>
+        <span className="rewrite-verdict-reason">{rewrite.verdictReason}</span>
+      </div>
     </div>
   );
 }
@@ -200,6 +275,11 @@ export default function ResultPanel({ result, onReset }) {
               </div>
             )}
           </div>
+        )}
+
+        {/* === MAKE IT STRONGER (FIX/KILL only) === */}
+        {decision !== 'PUSH' && (
+          <RewriteSection project={project} fear={input.fear} facing={input.facing} change={input.change} />
         )}
 
         {/* === COPY + RESET === */}
