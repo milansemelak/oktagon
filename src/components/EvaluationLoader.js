@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 const MESSAGES = [
-  'Entering the cage...',
-  'Testing your project...',
-  'Running FYF analysis...',
+  'Finding the fear...',
+  'Testing the confrontation...',
+  'Unleashing the warrior...',
 ];
 
 export default function EvaluationLoader({ onComplete }) {

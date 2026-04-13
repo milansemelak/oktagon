@@ -50,9 +50,9 @@ export default function ResultPanel({ result, onReset }) {
     `SELECTED NARRATIVE: ${selected.narrative}`,
     options.length > 1 ? `OPTIONS: ${options.map((o, i) => `${i + 1}. ${o.narrative}`).join(' | ')}` : '',
     ``,
-    `01 — FEAR (${scores.fear.score}/5): ${input.fear}`,
-    `02 — FACING (${scores.facing.score}/5): ${input.facing}`,
-    `03 — CHANGE (${scores.change.score}/5): ${input.change}`,
+    `01 — FIND THE FEAR (${scores.fear.score}/5): ${input.fear}`,
+    `02 — MAKE THEM FACE IT (${scores.facing.score}/5): ${input.facing}`,
+    `03 — UNLEASH THE WARRIOR (${scores.change.score}/5): ${input.change}`,
     changeNote ? `NOTE: ${changeNote}` : '',
   ].filter(Boolean).join('\n');
 
@@ -97,24 +97,24 @@ export default function ResultPanel({ result, onReset }) {
         {/* === PILLAR SCORES === */}
         <div className="scores-card">
           <h3 className="card-title">PILLAR SCORES</h3>
-          <ScoreBar label="FEAR" score={scores.fear.score} level={scores.fear.level} comment={feedback.fear.comment} />
-          <ScoreBar label="FACING" score={scores.facing.score} level={scores.facing.level} comment={feedback.facing.comment} />
-          <ScoreBar label="CHANGE" score={scores.change.score} level={scores.change.level} comment={feedback.change.comment} note={changeNote} />
+          <ScoreBar label="FIND THE FEAR" score={scores.fear.score} level={scores.fear.level} comment={feedback.fear.comment} />
+          <ScoreBar label="MAKE THEM FACE IT" score={scores.facing.score} level={scores.facing.level} comment={feedback.facing.comment} />
+          <ScoreBar label="UNLEASH THE WARRIOR" score={scores.change.score} level={scores.change.level} comment={feedback.change.comment} note={changeNote} />
         </div>
 
         {/* === WHAT YOU DESCRIBED === */}
         <div className="summary-card">
           <h3 className="card-title">WHAT YOU DESCRIBED</h3>
           <div className="summary-section">
-            <span className="summary-label">FEAR:</span>
+            <span className="summary-label">THE FEAR:</span>
             <p className="summary-value">{input.fear}</p>
           </div>
           <div className="summary-section">
-            <span className="summary-label">FACING:</span>
+            <span className="summary-label">THE FACING:</span>
             <p className="summary-value">{input.facing}</p>
           </div>
           <div className="summary-section">
-            <span className="summary-label">CHANGE:</span>
+            <span className="summary-label">THE WARRIOR:</span>
             <p className="summary-value">{input.change}</p>
           </div>
         </div>
@@ -141,19 +141,19 @@ export default function ResultPanel({ result, onReset }) {
             <h3 className="card-title">HOW TO FIX</h3>
             {feedback.fear.fix && (
               <div className="fix-item">
-                <span className="fix-pillar">FEAR</span>
+                <span className="fix-pillar">FIND THE FEAR</span>
                 <p className="fix-instruction">{feedback.fear.fix}</p>
               </div>
             )}
             {feedback.facing.fix && (
               <div className="fix-item">
-                <span className="fix-pillar">FACING</span>
+                <span className="fix-pillar">MAKE THEM FACE IT</span>
                 <p className="fix-instruction">{feedback.facing.fix}</p>
               </div>
             )}
             {feedback.change.fix && (
               <div className="fix-item">
-                <span className="fix-pillar">CHANGE</span>
+                <span className="fix-pillar">UNLEASH THE WARRIOR</span>
                 <p className="fix-instruction">{feedback.change.fix}</p>
               </div>
             )}

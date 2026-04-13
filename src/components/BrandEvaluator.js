@@ -56,9 +56,9 @@ export default function BrandEvaluator({ onSubmit }) {
             <div className="input-group">
               <label className="input-label">
                 <span className="q-number">01</span>
-                NAME THE FEAR
+                FIND THE FEAR
               </label>
-              <span className="input-helper">What specific fear does this project touch?</span>
+              <span className="input-helper">What is the real fear people would avoid?</span>
               <textarea
                 className="field textarea"
                 placeholder="being the weakest in the room..."
@@ -73,9 +73,9 @@ export default function BrandEvaluator({ onSubmit }) {
             <div className="input-group">
               <label className="input-label">
                 <span className="q-number">02</span>
-                FACING MECHANISM
+                MAKE THEM FACE IT
               </label>
-              <span className="input-helper">How does the project force someone to face it?</span>
+              <span className="input-helper">How does the project force confrontation?</span>
               <textarea
                 className="field textarea"
                 placeholder="walk in and box for 90 minutes..."
@@ -89,9 +89,9 @@ export default function BrandEvaluator({ onSubmit }) {
             <div className="input-group">
               <label className="input-label">
                 <span className="q-number">03</span>
-                CHANGE
+                UNLEASH THE WARRIOR
               </label>
-              <span className="input-helper">What visibly changes? Before → After.</span>
+              <span className="input-helper">Who do they become? Before → After.</span>
               <textarea
                 className="field textarea"
                 placeholder="stops making excuses, starts showing up..."
