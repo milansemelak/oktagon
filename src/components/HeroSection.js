@@ -13,11 +13,11 @@ export default function HeroSection({ onStart }) {
         <p className="hero-sub">Does your project deserve<br />to carry the OKTAGON brand?</p>
 
         <div className="formula-box">
-          <span className="formula-term">FIND THE FEAR</span>
+          <span className="formula-term">FEAR</span>
           <span className="formula-operator">&times;</span>
-          <span className="formula-term">MAKE THEM FACE IT</span>
+          <span className="formula-term">FACE</span>
           <span className="formula-equals">=</span>
-          <span className="formula-term formula-term-accent">UNLEASH THE WARRIOR</span>
+          <span className="formula-term formula-term-accent">WARRIOR</span>
         </div>
 
         <button className="cta-btn" onClick={onStart}>
