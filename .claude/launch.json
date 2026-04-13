@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "echo",
+      "runtimeArgs": ["server already running"],
+      "port": 3001
+    }
+  ]
+}
