@@ -185,41 +185,146 @@ const CAMPAIGN_PREFIXES = [
   { id: 'own', prefix: 'Own ' },
 ];
 
-// Standalone campaign lines — complete phrases, no core noun needed
-const STANDALONE_LINES = [
+// Standalone campaign lines — complete phrases, OKTAGON-style
+// Universal lines (work for any project)
+const STANDALONE_UNIVERSAL = [
   "Don't Look Away",
   "Prove It",
   "Enter The Cage",
-  "No Exit",
-  "Ring The Bell",
   "Your Name. Your Fight.",
-  "Still Here",
   "Show Up Or Shut Up",
   "One More Round",
-  "No Shortcuts",
   "Nowhere To Hide",
   "You Signed Up For This",
-  "The Door Is Open",
-  "Your Move",
+  "Comfort Kills",
+  "Excuses Expire Today",
+  "The Mirror Doesn't Lie",
+  "Silence Is Surrender",
+  "Your Name Is On It",
+  "No One's Coming To Save You",
+  "Say It To Their Face",
+  "You Already Know",
+  "Stop Talking. Start Moving.",
+  "The Truth Doesn't Wait",
+  "What Are You Avoiding?",
+  "Ready Or Not",
 ];
 
-// Pre-scored standalone lines (can't be auto-scored since they have no core)
-const STANDALONE_SCORES = {
-  "Don't Look Away": { score: 5, quality: 'strong' },
-  "Prove It": { score: 4, quality: 'specific' },
-  "Enter The Cage": { score: 5, quality: 'strong' },
-  "No Exit": { score: 4, quality: 'specific' },
-  "Ring The Bell": { score: 5, quality: 'strong' },
-  "Your Name. Your Fight.": { score: 5, quality: 'strong' },
-  "Still Here": { score: 4, quality: 'specific' },
-  "Show Up Or Shut Up": { score: 5, quality: 'strong' },
-  "One More Round": { score: 5, quality: 'strong' },
-  "No Shortcuts": { score: 4, quality: 'specific' },
-  "Nowhere To Hide": { score: 5, quality: 'strong' },
-  "You Signed Up For This": { score: 5, quality: 'strong' },
-  "The Door Is Open": { score: 4, quality: 'specific' },
-  "Your Move": { score: 4, quality: 'specific' },
+// Project-type-specific creative lines
+const STANDALONE_BY_TYPE = {
+  gym: [
+    "The Bag Doesn't Care",
+    "Weak Is A Choice",
+    "3 Rounds. No Excuses.",
+    "Sweat Is Proof",
+    "Your Body. Your Record.",
+    "The Gym Sees Everything",
+    "No Reps Left To Hide Behind",
+    "Train Where They Can See You",
+    "Your Alarm. Your Choice.",
+    "Last Rep. First Truth.",
+  ],
+  content: [
+    "Uncut. Unfiltered. Yours.",
+    "The Camera Doesn't Blink",
+    "Tell It Or Someone Else Will",
+    "No Edits. No Excuses.",
+    "Your Story. Raw.",
+    "The Mic Is On",
+    "No Script. No Safety Net.",
+    "Press Record On The Truth",
+    "What You Won't Say Out Loud",
+    "Every Frame Is A Choice",
+  ],
+  product: [
+    "Wear It Like You Mean It",
+    "Not A Logo. A Statement.",
+    "You Put It On. Now Own It.",
+    "This Isn't Fashion. It's A Claim.",
+    "What Does Your Shirt Say About You?",
+    "Branded. Visible. Yours.",
+    "If You Wear The Name, Earn It",
+    "The Tag Says Everything",
+  ],
+  event: [
+    "The Bell Doesn't Wait",
+    "Walk In Or Walk Away",
+    "One Night. One Truth.",
+    "No Replays. No Edits.",
+    "The Cage Door Closes Behind You",
+    "Everyone's Watching. Now What?",
+    "The Walk-In Is The Test",
+    "Your Entrance Says Everything",
+    "Lights On. Nowhere To Go.",
+    "The Card Is Set. Are You?",
+  ],
+  digital: [
+    "Lock Your Pick. Own Your Call.",
+    "Public Record. No Delete Button.",
+    "Your Prediction. Your Name. Your Problem.",
+    "Wrong? Everyone Will Know.",
+    "Talk Is Free. Picks Aren't.",
+    "Put Your Name Where Your Mouth Is",
+    "Every Week. New Exposure.",
+    "The Leaderboard Doesn't Lie",
+  ],
+  beer: [
+    "One Sip. No Lies.",
+    "Taste The Truth",
+    "Your Round. Your Name.",
+    "Drink What You Stand For",
+    "No Safe Picks",
+    "Every Bottle Has A Name On It",
+    "The First Sip Is The Verdict",
+    "Your Taste. On The Record.",
+    "No Hiding Behind The Label",
+    "If You Brew It, Face It",
+  ],
+  food: [
+    "Your Plate. Your Name.",
+    "Every Bite Is A Verdict",
+    "Cook It Like They're Watching",
+    "No Menu To Hide Behind",
+    "The First Bite Tells The Truth",
+    "If Your Name's On It, Mean It",
+    "Taste Doesn't Lie",
+    "Serve It Like You Made It",
+  ],
+  academy: [
+    "Day One Hits Different",
+    "The Beginner Tag Is Temporary",
+    "Everyone Starts Somewhere. Start Here.",
+    "Your Coach Sees Everything",
+    "Drill Until They Can't Tell You're New",
+    "First Session. Full Exposure.",
+    "Learn Where They Can See You",
+    "The Mat Doesn't Care About Your Ego",
+  ],
+  default: [],
 };
+
+// Fear-angle-specific creative lines
+const STANDALONE_BY_FEAR = {
+  weak: ["Weak Is A Choice", "Soft Doesn't Survive Here", "Strength Has Witnesses"],
+  judg: ["Let Them Watch", "Judged Either Way. Might As Well Show Up.", "Eyes On You. Good."],
+  fail: ["Fail Where They Can See You", "Your Record Is Public", "0-1 Is Still A Record"],
+  alone: ["Alone Is Not The Same As Hidden", "Nobody's Coming. Go.", "The Empty Corner Is Yours"],
+  excus: ["Excuses Expire Today", "Your Excuses Called. They Quit.", "Zero Excuses Left"],
+  comfort: ["Comfort Kills", "The Couch Won't Remember You", "Safe Is Just Slow Death"],
+  shame: ["Shame Lives In Silence", "Say It Out Loud Or It Owns You", "The Story You Won't Tell"],
+  quit: ["Quitters Don't Get Replays", "The Towel Is Right There. Don't Touch It.", "Still In. Still Standing."],
+  fraud: ["Drop The Mask", "They Already Know", "Fake Doesn't Last Here"],
+  doubt: ["Doubt Out Loud", "Your Inner Voice Is A Coward", "The What-If Ends Now"],
+  pain: ["Scars Are Proof", "Pain Is Just A Timestamp", "It Hurt. You're Still Here."],
+  truth: ["The Truth Doesn't Wait", "Honest Hits Harder", "No Filter. No Edit. No Exit."],
+};
+
+// All standalone lines get pre-scored as strong (they're curated)
+const STANDALONE_SCORES = {};
+[...STANDALONE_UNIVERSAL, ...Object.values(STANDALONE_BY_TYPE).flat(), ...Object.values(STANDALONE_BY_FEAR).flat()]
+  .forEach(line => {
+    STANDALONE_SCORES[line] = { score: 5, quality: 'strong' };
+  });
 
 // Extract the core from any campaign line by stripping known prefixes
 function extractNarrativeCore(narrative) {
@@ -521,8 +626,16 @@ function generateNarrativeOptions(project, fear, primaryNarrative, fearScore, sh
   }
   faceThePool.push('Face The Music', 'Face The Mirror');
 
-  // === POOL 6: Standalone lines ===
-  const standalonePool = [...STANDALONE_LINES];
+  // === POOL 6: Standalone lines — project-type + fear-angle + universal ===
+  const projectType = detectProjectType(project);
+  const standalonePool = [
+    ...(STANDALONE_BY_TYPE[projectType] || []),
+    ...STANDALONE_UNIVERSAL,
+  ];
+  // Add fear-angle-specific lines
+  for (const [keyword, lines] of Object.entries(STANDALONE_BY_FEAR)) {
+    if (t.includes(keyword)) standalonePool.push(...lines);
+  }
 
   // === MERGE ALL POOLS with structure tags ===
   const allCandidates = [
@@ -1079,10 +1192,11 @@ export function generateRewrite(project, fear, facing, change) {
   const raw = generateNarrativeOptions(project, fear, primaryNarrative, 4);
   const filteredOptions = raw.options.filter(o => !o.narrative.startsWith('Face '));
   // Pad with non-Face fallbacks if filtering removed too many
+  // Use project-specific creative lines as fallbacks
+  const typeLines = STANDALONE_BY_TYPE[type] || [];
   const nonFaceFallbacks = [
-    "Don't Look Away", 'Prove It', 'Enter The Cage', 'No More Hiding',
-    'Own Your Name', 'Show Up Or Shut Up', 'Ring The Bell', 'No More Excuses',
-    'One More Round', 'Nowhere To Hide', 'Still Here', 'No Exit',
+    ...typeLines,
+    ...STANDALONE_UNIVERSAL.slice(0, 10),
   ];
   for (const fb of nonFaceFallbacks) {
     if (filteredOptions.length >= 6) break;
