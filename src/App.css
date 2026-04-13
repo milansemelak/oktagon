@@ -89,7 +89,7 @@ body {
   display: block;
   position: absolute;
   top: -2%;
-  left: 5%;
+  left: -2%;
   width: 188%;
   max-width: none;
   mix-blend-mode: lighten;
