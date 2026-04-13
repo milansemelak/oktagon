@@ -128,27 +128,27 @@ function scorePillar(text, strongWords, weakWords) {
 
 function getFearFeedback(text, score) {
   const t = text.toLowerCase().trim();
-  if (!t) return { comment: 'No fear identified. Without a real fear, this project has no FYF foundation.', fix: 'Name an exact, specific fear that a real person experiences in a real situation.' };
-  if (score >= 4) return { comment: 'Real and tangible. If this fear disappeared, the project would lose its point.', fix: null };
-  if (FEAR_WEAK.some(w => t.includes(w))) return { comment: 'This is a category, not a fear. No one lies awake at night worrying about this.', fix: 'Replace category language with a specific human fear someone actually experiences.' };
-  if (t.split(/\s+/).length <= 2) return { comment: 'Too vague. This could mean anything.', fix: 'Be more specific — who feels this fear, where, and why does it matter?' };
-  return { comment: 'There\'s something here but it\'s not sharp enough to build a project around.', fix: 'Make the fear more specific and situational. When exactly does someone feel this?' };
+  if (!t) return { comment: 'No fear. No FYF.', fix: 'Where would someone hesitate before acting? Name that moment.' };
+  if (score >= 4) return { comment: 'Real. Situational. A person would pause before this.', fix: null };
+  if (FEAR_WEAK.some(w => t.includes(w))) return { comment: 'Too abstract. Where does this actually hurt?', fix: 'Replace the category with a specific moment where someone would hesitate.' };
+  if (t.split(/\s+/).length <= 2) return { comment: 'Too vague. This could mean anything to anyone.', fix: 'Make it situational. When and where does someone actually feel this?' };
+  return { comment: 'There\'s something here, but it\'s not sharp enough to make someone pause.', fix: 'Push toward a real situation. Where would someone hesitate before acting?' };
 }
 
 function getFacingFeedback(text, score) {
   const t = text.toLowerCase().trim();
-  if (!t) return { comment: 'No facing mechanism. The project has no moment where avoidance becomes confrontation.', fix: 'Describe the exact moment or situation where someone is forced to face the fear.' };
-  if (score >= 4) return { comment: 'Clear facing moment. You can picture someone moving from avoidance to confrontation.', fix: null };
-  if (FACING_WEAK.some(w => t.includes(w))) return { comment: 'This is passive, not facing. Watching, buying, or feeling is not confrontation.', fix: 'Show a real action where someone physically or publicly confronts the fear.' };
-  return { comment: 'The mechanism exists but it\'s unclear or too abstract.', fix: 'Make the facing moment concrete — what does someone actually do, where, and when?' };
+  if (!t) return { comment: 'No facing. No exposure. No FYF.', fix: 'Where are they seen, judged, or unable to hide?' };
+  if (score >= 4) return { comment: 'Clear moment of exposure. They cannot hide here.', fix: null };
+  if (FACING_WEAK.some(w => t.includes(w))) return { comment: 'They can avoid this. This is not facing.', fix: 'Force exposure. Where are they seen, judged, or unable to hide?' };
+  return { comment: 'No exposure. No risk. This doesn\'t hold.', fix: 'Find the moment where they are seen or judged. Effort alone is not facing.' };
 }
 
 function getChangeFeedback(text, score) {
   const t = text.toLowerCase().trim();
-  if (!t) return { comment: 'No observable change. If nothing visibly changes, facing the fear was meaningless.', fix: 'Describe what someone does differently AFTER — visible behavior, not feelings.' };
-  if (score >= 4) return { comment: 'Clear before/after. The change is observable and identity-level.', fix: null };
-  if (CHANGE_WEAK.some(w => t.includes(w))) return { comment: 'This is internal language, not observable change. You can\'t see "feeling confident" from the outside.', fix: 'Replace emotional language with visible behavior. What does someone DO differently?' };
-  return { comment: 'The change is mentioned but not concrete enough to verify.', fix: 'Use Before → After format. What did they do before? What do they do now?' };
+  if (!t) return { comment: 'No warrior. Nothing visibly changes.', fix: 'What do they DO differently after? Not feel — do.' };
+  if (score >= 4) return { comment: 'Visible change. You can see the warrior from the outside.', fix: null };
+  if (CHANGE_WEAK.some(w => t.includes(w))) return { comment: 'This is internal. You can\'t see "feeling confident" from the outside.', fix: 'What do they DO differently now? Visible behavior, not emotions.' };
+  return { comment: 'Not concrete enough to verify. What would someone actually observe?', fix: 'Use Before → After. What did they do before? What do they do now?' };
 }
 
 // --- FYF NARRATIVE GENERATOR ---
@@ -407,24 +407,37 @@ function realityCheck(project, fear, facing, change, fearScore, facingScore, cha
   const facl = facing.toLowerCase().trim();
   const cl = change.toLowerCase().trim();
 
-  // Check: is fear real?
+  // Test 1: Would a person pause or avoid this?
   const fearReal = fearScore >= 3;
-  if (!fearReal) issues.push('Fear is not real or specific enough.');
+  if (!fearReal) issues.push('Too abstract. Where does this actually hurt?');
 
-  // Check: is facing unavoidable?
+  // Test 2: Where can they NOT hide?
   const facingPassive = FACING_WEAK.some(w => facl.includes(w));
   const facingReal = facingScore >= 3 && !facingPassive;
   if (!facingReal) {
-    if (facingPassive) issues.push('People can avoid this situation. Watching, buying, or scrolling is not facing.');
-    else if (facingScore < 3) issues.push('No real facing moment. Where is the confrontation?');
+    if (facingPassive) issues.push('They can avoid this. This is not facing.');
+    else if (facingScore < 3) issues.push('No exposure. No risk. This doesn\'t hold.');
   }
 
-  // Check: is change visible?
+  // Test 3: Are they seen, judged, or exposed?
+  const exposureWords = ['public', 'seen', 'watched', 'judg', 'in front', 'camera', 'live', 'cage', 'ring', 'stage', 'crowd', 'audience', 'name on', 'on the line', 'record'];
+  const hasExposure = exposureWords.some(w => facl.includes(w));
+  if (facingReal && !hasExposure) {
+    issues.push('No clear exposure. Are they seen, judged, or unable to hide?');
+  }
+
+  // Test 4: What do they DO differently?
   const changeInternal = CHANGE_WEAK.some(w => cl.includes(w));
   const changeReal = changeScore >= 3 && !changeInternal;
   if (!changeReal) {
     if (changeInternal) issues.push('Nothing visibly changes. Internal feelings are not proof.');
-    else if (changeScore < 3) issues.push('No visible warrior. What do they do differently?');
+    else if (changeScore < 3) issues.push('No warrior. What do they DO differently now?');
+  }
+
+  // Safe/private/avoidable check
+  const safeWords = ['private', 'alone', 'at home', 'by yourself', 'nobody sees', 'optional', 'choose to'];
+  if (safeWords.some(w => facl.includes(w))) {
+    issues.push('If it\'s safe, private, or avoidable — it\'s not FYF.');
   }
 
   // Product check
@@ -449,7 +462,7 @@ function realityCheck(project, fear, facing, change, fearScore, facingScore, cha
   if (issues.length === 0 && fearReal && facingReal && changeReal) {
     verdict = 'GROUNDED';
     verdictClass = 'grounded';
-    explanation = 'This forces confrontation. The fear is real, facing is unavoidable, and the change is visible.';
+    explanation = 'This forces confrontation. The fear is real, the exposure is unavoidable, and the warrior is visible.';
   } else if ((!fl && !facl) || (!fearReal && !facingReal) || fearScore <= 1 || facingScore <= 1) {
     verdict = 'BROKEN';
     verdictClass = 'broken';
