@@ -110,6 +110,9 @@ function RewriteSection({ project, fear, facing, change }) {
     ``,
     `INTENT: ${rewrite.intent}`,
     ``,
+    `CAMPAIGN LINE: ${rewrite.campaignLines.selected.narrative}`,
+    `OPTIONS: ${rewrite.campaignLines.options.map((o, i) => `${i + 1}. ${o.narrative}`).join(' | ')}`,
+    ``,
     `FEAR: ${rewrite.fear}`,
     `FACING MOMENT: ${rewrite.facingMoment}`,
     `FACING SYSTEM: ${rewrite.facingSystem}`,
@@ -133,6 +136,18 @@ function RewriteSection({ project, fear, facing, change }) {
       <div className="rewrite-block">
         <span className="rewrite-label">INTENT</span>
         <p className="rewrite-value">{rewrite.intent}</p>
+      </div>
+
+      <div className="rewrite-block">
+        <span className="rewrite-label">CAMPAIGN LINE</span>
+        <p className="rewrite-value rewrite-highlight">{rewrite.campaignLines.selected.narrative}</p>
+        <div className="rewrite-campaign-alts">
+          {rewrite.campaignLines.options
+            .filter(o => o.narrative !== rewrite.campaignLines.selected.narrative)
+            .map((opt, i) => (
+              <span className="narrative-alt-chip" key={i}>{opt.narrative}</span>
+            ))}
+        </div>
       </div>
 
       <div className="rewrite-block">

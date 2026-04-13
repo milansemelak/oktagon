@@ -832,6 +832,13 @@ body {
   font-weight: 600;
 }
 
+.rewrite-campaign-alts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 6px;
+  margin-top: 12px;
+}
+
 .rewrite-before-after {
   font-size: 14px;
   line-height: 1.6;

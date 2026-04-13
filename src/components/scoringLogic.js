@@ -278,9 +278,10 @@ function generateNarrative(project, fear, fearScore) {
   // Strip common prefixes
   let core = t
     .replace(/^(the fear of|fear of|being afraid of|afraid of)\s+/i, '')
-    .replace(/^(being|having|feeling|putting|showing|telling|admitting|wearing|standing|walking|sitting|serving|locking)\s+/i, '')
+    .replace(/^(being|having|feeling|putting|showing|telling|admitting|wearing|standing|walking|sitting|serving|locking|going|coming|trying|facing)\s+/i, '')
     .replace(/^(the fact that|that you are|that you're|that people|that everyone)\s+/i, '')
-    .replace(/\s+(and|when|because|so|but|—|-|that people|knowing|where|while)[\s\S]*$/i, '') // trim after conjunctions/clauses
+    .replace(/^(in front of|in a|in an|in the|on a|on the|at a|at the)\s+/i, '') // strip location prepositions
+    .replace(/\s+(and|when|because|so|but|—|-|that people|knowing|where|while|surrounded|for the first)[\s\S]*$/i, '') // trim after conjunctions/clauses
     .trim();
 
   // Remove articles & possessives
@@ -1075,12 +1076,18 @@ export function generateRewrite(project, fear, facing, change) {
 
   const intent = `Make people face ${fear.trim() || 'something real'} through ${project}`;
 
+  // Generate campaign lines based on the stronger rewritten fear
+  const rewrittenFear = REWRITE_FEARS[type];
+  const primaryNarrative = generateNarrative(project, rewrittenFear, 4);
+  const campaignLines = generateNarrativeOptions(project, rewrittenFear, primaryNarrative, 4);
+
   return {
     intent,
-    fear: REWRITE_FEARS[type],
+    fear: rewrittenFear,
     facingMoment: REWRITE_FACINGS[type],
     facingSystem: REWRITE_SYSTEMS[type],
     warrior: REWRITE_WARRIORS[type],
+    campaignLines,
     verdict: 'WORKS',
     verdictReason: 'The fear is situational, the exposure is unavoidable, and the change is visible.',
   };
