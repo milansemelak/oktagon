@@ -346,6 +346,24 @@ body {
 
 .demo-btn:hover { color: var(--accent); }
 
+.clear-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.2s;
+}
+
+.clear-btn:hover { color: var(--red); }
+
 .input-helper-sub {
   display: block;
   font-size: 12px;

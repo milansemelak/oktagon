@@ -108,6 +108,15 @@ export default function BrandEvaluator({ onSubmit }) {
             >
               ENTER THE CAGE
             </button>
+            {(project || fear || facing || change) && (
+              <button
+                className="clear-btn"
+                onClick={() => { setProject(''); setFear(''); setFacing(''); setChange(''); }}
+                type="button"
+              >
+                CLEAR
+              </button>
+            )}
           </div>
         </div>
       </div>
