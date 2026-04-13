@@ -62,7 +62,7 @@ function NarrativeSection({ initialOptions, project, fear, fearScore }) {
 
   const { options, selected, whyItWins } = narratives;
 
-  const lensLabels = ['SIGNATURE LINES', 'ALTERNATIVE ANGLES', 'BOLD LINES'];
+  const lensLabels = ['FACE YOUR ___', 'FACE THE ___', 'MIXED'];
   const currentLens = lensLabels[shuffleCount % 3];
 
   return (

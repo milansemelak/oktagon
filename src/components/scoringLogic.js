@@ -567,92 +567,59 @@ function generateNarrativeOptions(project, fear, primaryNarrative, fearScore, sh
   if (t.includes('talk') || t.includes('promise') || t.includes('say')) {
     noMorePool.push('No More Talking');
   }
-  // Universal "No More" options
-  noMorePool.push('No More Excuses', 'No More Hiding');
-
-  // === POOL 3: "Step Into ___" ===
-  const stepIntoPool = [];
-  if (pl.includes('gym') || pl.includes('box') || pl.includes('fight') || pl.includes('event')) {
-    stepIntoPool.push('Step Into The Cage', 'Step Into The Ring', 'Step Into The Arena');
-  }
-  if (t.includes('truth') || t.includes('honest') || t.includes('real')) {
-    stepIntoPool.push('Step Into The Truth');
-  }
-  if (t.includes('fear') || t.includes('afraid') || t.includes('scared')) {
-    stepIntoPool.push('Step Into The Fire', 'Step Into The Unknown');
-  }
-  if (t.includes('judg') || t.includes('public') || t.includes('seen')) {
-    stepIntoPool.push('Step Into The Spotlight', 'Step Into The Room');
-  }
-  if (t.includes('silent') || t.includes('quiet')) {
-    stepIntoPool.push('Step Into The Silence');
-  }
-  // Universal
-  stepIntoPool.push('Step Into The Cage', 'Step Into Your Name');
-
-  // === POOL 4: "Own ___" ===
-  const ownPool = [];
-  if (t.includes('fail') || t.includes('los') || t.includes('defeat')) {
-    ownPool.push('Own Your Loss', 'Own Your Record');
-  }
-  if (t.includes('shame') || t.includes('scar') || t.includes('pain') || t.includes('hurt')) {
-    ownPool.push('Own Your Scar', 'Own Your Story');
-  }
-  if (t.includes('responsib') || t.includes('accountab') || t.includes('name')) {
-    ownPool.push('Own Your Name', 'Own The Outcome');
-  }
-  if (t.includes('fear') || t.includes('afraid')) {
-    ownPool.push('Own Your Fear');
-  }
-  if (t.includes('weak') || t.includes('mediocr') || t.includes('average')) {
-    ownPool.push('Own It');
-  }
-  // Universal
-  ownPool.push('Own Your Name', 'Own The Moment');
-
-  // === POOL 5: "Face The ___" ===
+  // === POOL 2: "Face The ___" — broader, more dramatic ===
   const faceThePool = [];
-  if (t.includes('truth') || t.includes('reality') || t.includes('mirror')) {
-    faceThePool.push('Face The Mirror', 'Face The Truth');
+  if (t.includes('truth') || t.includes('reality') || t.includes('mirror') || t.includes('honest')) {
+    faceThePool.push('Face The Mirror', 'Face The Truth', 'Face The Reflection');
   }
-  if (t.includes('crowd') || t.includes('public') || t.includes('judg')) {
-    faceThePool.push('Face The Crowd');
+  if (t.includes('crowd') || t.includes('public') || t.includes('judg') || t.includes('watch')) {
+    faceThePool.push('Face The Crowd', 'Face The Room', 'Face The Eyes');
   }
   if (t.includes('pain') || t.includes('hurt') || t.includes('scar')) {
-    faceThePool.push('Face The Pain');
+    faceThePool.push('Face The Pain', 'Face The Scar');
   }
-  if (pl.includes('event') || pl.includes('fight') || pl.includes('gym')) {
-    faceThePool.push('Face The Bell', 'Face The Cage');
+  if (t.includes('silent') || t.includes('quiet') || t.includes('avoid')) {
+    faceThePool.push('Face The Silence', 'Face The Quiet');
   }
-  faceThePool.push('Face The Music', 'Face The Mirror');
+  if (t.includes('fail') || t.includes('los') || t.includes('defeat')) {
+    faceThePool.push('Face The Scoreboard', 'Face The Record', 'Face The Loss');
+  }
+  if (t.includes('excus') || t.includes('comfort') || t.includes('lazy')) {
+    faceThePool.push('Face The Couch', 'Face The Alarm');
+  }
+  // Project-specific "Face The" lines
+  if (pl.includes('gym') || pl.includes('box') || pl.includes('fight') || pl.includes('event')) {
+    faceThePool.push('Face The Bell', 'Face The Cage', 'Face The Ring', 'Face The Arena', 'Face The Walk-In');
+  }
+  if (pl.includes('beer') || pl.includes('drink')) {
+    faceThePool.push('Face The First Sip', 'Face The Verdict', 'Face The Label');
+  }
+  if (pl.includes('food') || pl.includes('farm') || pl.includes('restaurant')) {
+    faceThePool.push('Face The Plate', 'Face The First Bite', 'Face The Kitchen');
+  }
+  if (pl.includes('documentary') || pl.includes('film') || pl.includes('show')) {
+    faceThePool.push('Face The Camera', 'Face The Lens', 'Face The Raw Cut');
+  }
+  if (pl.includes('academy') || pl.includes('school')) {
+    faceThePool.push('Face The Mat', 'Face The Drill', 'Face The Coach');
+  }
+  if (pl.includes('fantasy') || pl.includes('league') || pl.includes('app')) {
+    faceThePool.push('Face The Leaderboard', 'Face The Picks', 'Face The Public Record');
+  }
+  faceThePool.push('Face The Music', 'Face The Mirror', 'Face The Silence');
 
-  // === POOL 6: Standalone lines — project-type + fear-angle + universal ===
-  const projectType = detectProjectType(project);
-  const standalonePool = [
-    ...(STANDALONE_BY_TYPE[projectType] || []),
-    ...STANDALONE_UNIVERSAL,
-  ];
-  // Add fear-angle-specific lines
-  for (const [keyword, lines] of Object.entries(STANDALONE_BY_FEAR)) {
-    if (t.includes(keyword)) standalonePool.push(...lines);
-  }
-
-  // === MERGE ALL POOLS with structure tags ===
+  // === MERGE — only Face Your + Face The ===
   const allCandidates = [
     ...[...new Set(faceYourPool)].map(n => ({ narrative: n, sid: 'face-your' })),
     ...[...new Set(faceThePool)].map(n => ({ narrative: n, sid: 'face-the' })),
-    ...[...new Set(noMorePool)].map(n => ({ narrative: n, sid: 'no-more' })),
-    ...[...new Set(stepIntoPool)].map(n => ({ narrative: n, sid: 'step-into' })),
-    ...[...new Set(ownPool)].map(n => ({ narrative: n, sid: 'own' })),
-    ...standalonePool.map(n => ({ narrative: n, sid: 'standalone' })),
   ];
 
-  // === LENS SYSTEM: shuffle rotates priority ===
+  // === LENS SYSTEM: shuffle rotates which pool gets priority ===
   const lens = shuffleIteration % 3;
   const lensBonus = [
-    { 'face-your': 1, 'face-the': 0.5 },                     // lens 0: signature
-    { 'no-more': 1.5, 'step-into': 1.5, 'own': 1.5 },        // lens 1: alternatives
-    { 'standalone': 2, 'face-the': 1, 'own': 1 },             // lens 2: bold
+    { 'face-your': 1, 'face-the': 0 },          // lens 0: "Face Your" heavy
+    { 'face-your': 0, 'face-the': 1.5 },         // lens 1: "Face The" heavy
+    { 'face-your': 0.5, 'face-the': 0.5 },       // lens 2: mixed
   ][lens];
 
   // Score all candidates
@@ -695,19 +662,19 @@ function generateNarrativeOptions(project, fear, primaryNarrative, fearScore, sh
     );
     if (isDuplicate && core.split(/\s+/).length <= 1) continue;
 
-    // Max 2 per structure for diversity
+    // Max 4 per structure for some diversity between Face Your / Face The
     const structCount = usedStructures[candidate.sid] || 0;
-    if (structCount >= 2) continue;
+    if (structCount >= 4) continue;
 
     options.push({ narrative: candidate.narrative, score: candidate.score, quality: candidate.quality });
     usedStructures[candidate.sid] = structCount + 1;
     usedCores.add(core);
   }
 
-  // Pad with diverse fallbacks if needed
+  // Pad with fallbacks if needed
   const fallbacks = [
-    'Face Your Silence', 'No More Excuses', 'Step Into The Cage',
-    "Don't Look Away", 'Own Your Name', 'Prove It',
+    'Face Your Silence', 'Face The Mirror', 'Face Your Own Name',
+    'Face The Music', 'Face Your Reflection', 'Face The Cage',
   ];
   for (const fb of fallbacks) {
     if (options.length >= 6) break;
