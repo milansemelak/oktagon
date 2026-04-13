@@ -221,22 +221,6 @@ const STANDALONE_SCORES = {
   "Your Move": { score: 4, quality: 'specific' },
 };
 
-// Curated cores for non-"Face Your" structures
-const NO_MORE_CORES = [
-  'Excuses', 'Hiding', 'Comfort', 'Tomorrow', 'Safe Choices', 'Silence',
-  'Running', 'Watching', 'Waiting', 'Pretending', 'Talking', 'Planning',
-];
-
-const STEP_INTO_CORES = [
-  'The Cage', 'The Ring', 'The Room', 'The Spotlight', 'The Unknown',
-  'The Fire', 'Your Name', 'The Arena', 'The Silence', 'The Truth',
-];
-
-const OWN_CORES = [
-  'Your Record', 'The Room', 'Your Name', 'Your Loss', 'Your Scar',
-  'Your Story', 'It', 'The Moment', 'Your Fear', 'The Outcome',
-];
-
 // Extract the core from any campaign line by stripping known prefixes
 function extractNarrativeCore(narrative) {
   for (const { prefix } of CAMPAIGN_PREFIXES) {
