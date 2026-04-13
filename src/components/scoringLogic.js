@@ -1056,16 +1056,17 @@ export function getProjectContext(projectName) {
 }
 
 // Curated strongest campaign lines per project type for the rewrite
+// Intentionally avoids "Face Your/Face The" — the rewrite offers fresh angles
 const REWRITE_NARRATIVES = {
-  gym: 'Face Your Weakness',
-  content: 'Face Your Uncut Story',
-  product: 'Face Your Label',
-  event: 'Face The Cage',
-  digital: 'Face Your Public Record',
-  beer: 'Face Your Taste',
-  food: 'Face Your Plate',
-  academy: 'Face Your First Session',
-  default: 'Face Your Silence',
+  gym: 'No More Excuses',
+  content: "Don't Look Away",
+  product: 'Own Your Name',
+  event: 'Enter The Cage',
+  digital: 'Own Your Record',
+  beer: 'Prove It',
+  food: 'Your Name. Your Fight.',
+  academy: 'Show Up Or Shut Up',
+  default: 'No More Hiding',
 };
 
 export function generateRewrite(project, fear, facing, change) {
@@ -1073,9 +1074,27 @@ export function generateRewrite(project, fear, facing, change) {
 
   const intent = `Make people face ${fear.trim() || 'something real'} through ${project}`;
 
-  // Use curated primary + generate alternatives from original user fear
+  // Use curated primary + generate alternatives, then filter out "Face" lines
   const primaryNarrative = REWRITE_NARRATIVES[type];
-  const campaignLines = generateNarrativeOptions(project, fear, primaryNarrative, 4);
+  const raw = generateNarrativeOptions(project, fear, primaryNarrative, 4);
+  const filteredOptions = raw.options.filter(o => !o.narrative.startsWith('Face '));
+  // Pad with non-Face fallbacks if filtering removed too many
+  const nonFaceFallbacks = [
+    "Don't Look Away", 'Prove It', 'Enter The Cage', 'No More Hiding',
+    'Own Your Name', 'Show Up Or Shut Up', 'Ring The Bell', 'No More Excuses',
+    'One More Round', 'Nowhere To Hide', 'Still Here', 'No Exit',
+  ];
+  for (const fb of nonFaceFallbacks) {
+    if (filteredOptions.length >= 6) break;
+    if (!filteredOptions.some(o => o.narrative === fb) && fb !== primaryNarrative) {
+      filteredOptions.push({ narrative: fb, ...scoreNarrative(fb) });
+    }
+  }
+  const campaignLines = {
+    options: filteredOptions.slice(0, 6),
+    selected: { narrative: primaryNarrative, ...scoreNarrative(primaryNarrative) },
+    whyItWins: raw.whyItWins,
+  };
 
   return {
     intent,
