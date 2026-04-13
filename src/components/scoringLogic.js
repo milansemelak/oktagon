@@ -193,7 +193,13 @@ const NOUNIFY = {
   'judged': 'Judgment', 'rejected': 'Rejection',
   'alone': 'Being Alone', 'lonely': 'Loneliness',
   'broken': 'Being Broken', 'lost': 'Being Lost',
-  'humiliated': 'Humiliation', 'embarrassed': 'Embarrassment',
+  'humiliated': 'Replay', 'embarrassed': 'Morning After',
+  'hate': 'Own Skin', 'hatred': 'Reflection', 'self-hatred': 'Own Skin',
+  'anger': 'Fire', 'rage': 'Trigger', 'fury': 'Rage',
+  'mediocre': 'Stats', 'average': 'Ranking', 'ordinary': 'Average',
+  'control': 'Chaos', 'powerless': 'Open Round',
+  'trust': 'Empty Corner', 'betrayed': 'Empty Corner',
+  'responsible': 'Signature', 'accountable': 'Receipt',
 };
 
 function generateNarrative(project, fear, fearScore) {
@@ -254,32 +260,111 @@ function generateNarrativeOptions(project, fear, primaryNarrative, fearScore) {
   const pl = project.toLowerCase();
   const pool = [];
 
-  // Angle 1: Emotion-based reframings
-  if (t.includes('weak') || t.includes('lazy')) pool.push('Face Your Excuses', 'Face Your Softness');
-  if (t.includes('judg') || t.includes('public')) pool.push('Face Your Audience', 'Face Your Spotlight');
-  if (t.includes('fail') || t.includes('los')) pool.push('Face Your Record', 'Face Your Scoreboard');
-  if (t.includes('alone') || t.includes('belong')) pool.push('Face Your Isolation', 'Face Your Empty Corner');
-  if (t.includes('truth') || t.includes('reality') || t.includes('mirror')) pool.push('Face Your Reflection', 'Face Your Mirror');
-  if (t.includes('shame') || t.includes('embarrass')) pool.push('Face Your Past', 'Face Your Shame');
-  if (t.includes('comfort') || t.includes('soft') || t.includes('easy')) pool.push('Face Your Comfort', 'Face Your Couch');
-  if (t.includes('excus')) pool.push('Face Your Mirror', 'Face Your Morning');
-  if (t.includes('fraud') || t.includes('fake') || t.includes('imposter')) pool.push('Face Your Mask', 'Face Your Fraud');
-  if (t.includes('quit') || t.includes('giving up')) pool.push('Face Your Exit', 'Face Your Quit');
-  if (t.includes('exposed') || t.includes('seen')) pool.push('Face Your Exposure', 'Face Your Spotlight');
-  if (t.includes('pain') || t.includes('hurt')) pool.push('Face Your Pain', 'Face Your Body');
-  if (t.includes('doubt') || t.includes('insecure')) pool.push('Face Your Doubt', 'Face Your Inner Voice');
-  if (t.includes('reject')) pool.push('Face Your Rejection', 'Face Your No');
+  // --- FEAR-BASED: sharp, specific, visual narratives ---
+  if (t.includes('weak') || t.includes('lazy') || t.includes('soft')) {
+    pool.push('Face Your 5AM', 'Face Your First Round', 'Face Your Empty Gym Bag', 'Face Your Alarm Clock');
+  }
+  if (t.includes('judg') || t.includes('public') || t.includes('watch') || t.includes('seen')) {
+    pool.push('Face Your Crowd', 'Face Your Front Row', 'Face Your Spotlight', 'Face Your Name On The Board');
+  }
+  if (t.includes('fail') || t.includes('los') || t.includes('defeat')) {
+    pool.push('Face Your Scoreboard', 'Face Your Last Round', 'Face Your 0-1 Record', 'Face Your Replay');
+  }
+  if (t.includes('alone') || t.includes('belong') || t.includes('outsid')) {
+    pool.push('Face Your Empty Corner', 'Face Your First Day', 'Face Your Locker Room');
+  }
+  if (t.includes('truth') || t.includes('reality') || t.includes('mirror') || t.includes('honest')) {
+    pool.push('Face Your Reflection', 'Face Your Weigh-In', 'Face Your Numbers', 'Face Your Tape');
+  }
+  if (t.includes('shame') || t.includes('embarrass') || t.includes('humiliat')) {
+    pool.push('Face Your Replay', 'Face Your Walk Back', 'Face Your Morning After');
+  }
+  if (t.includes('comfort') || t.includes('easy') || t.includes('safe')) {
+    pool.push('Face Your Couch', 'Face Your Routine', 'Face Your Safe Choice');
+  }
+  if (t.includes('excus') || t.includes('procrastin') || t.includes('avoid')) {
+    pool.push('Face Your Tomorrow', 'Face Your Alarm', 'Face Your Own Bullshit');
+  }
+  if (t.includes('fraud') || t.includes('fake') || t.includes('imposter') || t.includes('pretend')) {
+    pool.push('Face Your Mask', 'Face Your Credentials', 'Face Your Bluff');
+  }
+  if (t.includes('quit') || t.includes('giving up') || t.includes('walk away')) {
+    pool.push('Face Your Exit Door', 'Face Your Quit Button', 'Face Your White Towel');
+  }
+  if (t.includes('pain') || t.includes('hurt') || t.includes('injur')) {
+    pool.push('Face Your Scar', 'Face Your Stitches', 'Face Your X-Ray');
+  }
+  if (t.includes('doubt') || t.includes('insecur') || t.includes('not enough')) {
+    pool.push('Face Your Inner Voice', 'Face Your 3AM Thoughts', 'Face Your What-If');
+  }
+  if (t.includes('reject') || t.includes('denied') || t.includes('cut')) {
+    pool.push('Face Your No', 'Face Your Closed Door', 'Face Your Waiting List');
+  }
+  if (t.includes('hate') || t.includes('hatred') || t.includes('self-hat') || t.includes('disgust') || t.includes('loath')) {
+    pool.push('Face Your Reflection', 'Face Your Own Skin', 'Face Your Mirror Without Flinching', 'Face Your Naked Truth');
+  }
+  if (t.includes('anger') || t.includes('rage') || t.includes('fury')) {
+    pool.push('Face Your Fire', 'Face Your Rage', 'Face Your Trigger');
+  }
+  if (t.includes('compet') || t.includes('compar') || t.includes('better than')) {
+    pool.push('Face Your Rankings', 'Face Your Bracket', 'Face Your Opponent');
+  }
+  if (t.includes('trust') || t.includes('betray') || t.includes('abandon')) {
+    pool.push('Face Your Empty Corner', 'Face Your Teammate', 'Face Your Trust');
+  }
+  if (t.includes('control') || t.includes('powerless') || t.includes('helpless')) {
+    pool.push('Face Your Chaos', 'Face Your Open Round', 'Face Your Unknown');
+  }
+  if (t.includes('death') || t.includes('mortality') || t.includes('dying')) {
+    pool.push('Face Your Clock', 'Face Your Last Round', 'Face Your Final Bell');
+  }
+  if (t.includes('mediocr') || t.includes('ordinary') || t.includes('average') || t.includes('nothing special')) {
+    pool.push('Face Your Stats', 'Face Your Ranking', 'Face Your Average');
+  }
+  if (t.includes('responsib') || t.includes('accountab') || t.includes('own')) {
+    pool.push('Face Your Name On It', 'Face Your Signature', 'Face Your Receipt');
+  }
+  if (t.includes('start') || t.includes('begin') || t.includes('first time') || t.includes('new')) {
+    pool.push('Face Your Day One', 'Face Your First Step', 'Face Your Beginner Tag');
+  }
+  if (t.includes('voice') || t.includes('speak') || t.includes('say') || t.includes('express') || t.includes('opinion')) {
+    pool.push('Face Your Microphone', 'Face Your Open Mic', 'Face Your Unscripted Moment');
+  }
+  if (t.includes('age') || t.includes('old') || t.includes('past prime')) {
+    pool.push('Face Your Clock', 'Face Your Birthday', 'Face Your Expiry Date');
+  }
+  if (t.includes('body') || t.includes('physi') || t.includes('weight') || t.includes('shape')) {
+    pool.push('Face Your Reflection', 'Face Your Shirt Off', 'Face Your Starting Weight');
+  }
 
-  // Angle 2: Project-type reframings
-  if (pl.includes('gym') || pl.includes('train')) pool.push('Face Your Body', 'Face Your Reps', 'Face Your Bag');
-  if (pl.includes('comeback') || pl.includes('return')) pool.push('Face Your Comeback', 'Face Your Return');
-  if (pl.includes('fantasy') || pl.includes('league') || pl.includes('pick')) pool.push('Face Your Picks', 'Face Your Judgment');
-  if (pl.includes('merch') || pl.includes('drop')) pool.push('Face Your Image', 'Face Your Label');
-  if (pl.includes('documentary') || pl.includes('film')) pool.push('Face Your Story', 'Face Your Camera');
-  if (pl.includes('event') || pl.includes('fight')) pool.push('Face Your Cage', 'Face Your Walk-In');
+  // --- PROJECT-BASED: specific to the idea ---
+  if (pl.includes('gym') || pl.includes('train') || pl.includes('box') || pl.includes('fitness')) {
+    pool.push('Face Your Bag', 'Face Your First Sparring', 'Face Your Heavy Bag', 'Face Your Training Partner', 'Face Your Last Rep');
+  }
+  if (pl.includes('comeback') || pl.includes('return')) {
+    pool.push('Face Your Comeback', 'Face Your Cage Again', 'Face Your Second Chance', 'Face Your Old Footage');
+  }
+  if (pl.includes('fantasy') || pl.includes('league') || pl.includes('pick') || pl.includes('app')) {
+    pool.push('Face Your Picks', 'Face Your Public Record', 'Face Your Wrong Calls', 'Face Your Leaderboard');
+  }
+  if (pl.includes('merch') || pl.includes('drop') || pl.includes('hoodie') || pl.includes('gear')) {
+    pool.push('Face Your Label', 'Face Your Tag', 'Face Your Claim', 'Face Your Uniform');
+  }
+  if (pl.includes('documentary') || pl.includes('film') || pl.includes('series') || pl.includes('show')) {
+    pool.push('Face Your Camera', 'Face Your Uncut Story', 'Face Your Raw Footage', 'Face Your Episode');
+  }
+  if (pl.includes('event') || pl.includes('fight') || pl.includes('tournament') || pl.includes('card')) {
+    pool.push('Face Your Walk-In', 'Face Your Entrance', 'Face Your Weigh-In', 'Face Your Bell');
+  }
+  if (pl.includes('podcast') || pl.includes('interview') || pl.includes('talk')) {
+    pool.push('Face Your Microphone', 'Face Your Live Question', 'Face Your Audience');
+  }
+  if (pl.includes('academy') || pl.includes('school') || pl.includes('program') || pl.includes('camp')) {
+    pool.push('Face Your First Session', 'Face Your Ranking', 'Face Your Drill Partner');
+  }
 
-  // Angle 3: Universal strong options
-  pool.push('Face Your Silence', 'Face Your Excuses', 'Face Your Mirror');
+  // --- WILDCARD: universal strong options that always work ---
+  pool.push('Face Your Silence', 'Face Your Mirror', 'Face Your Own Name');
 
   // Deduplicate, remove primary
   const primaryCore = primaryNarrative.replace('Face Your ', '');
@@ -336,21 +421,41 @@ function scoreNarrative(narrative) {
   const core = narrative.replace('Face Your ', '').toLowerCase();
 
   // Generic/banned words = weak narrative
-  const banned = ['fear', 'challenge', 'limits', 'comfort zone', 'yourself', 'potential', 'greatness', 'dreams'];
+  const banned = ['fear', 'challenge', 'limits', 'comfort zone', 'yourself', 'potential', 'greatness', 'dreams', 'truth', 'feelings', 'emotions'];
   if (banned.some(b => core === b)) return { score: 1, quality: 'generic' };
 
   // Very short single abstract word
-  const vague = ['self', 'mind', 'life', 'world', 'reality', 'future', 'past'];
+  const vague = ['self', 'mind', 'life', 'world', 'future', 'past', 'pain', 'doubt', 'power'];
   if (vague.some(v => core === v)) return { score: 2, quality: 'vague' };
 
-  // Good: specific, concrete, visual
-  const strong = ['weakness', 'excuses', 'silence', 'fraud', 'laziness', 'shame',
-    'exposure', 'judgment', 'failure', 'humiliation', 'mirror', 'reflection',
-    'mask', 'exit', 'record', 'body', 'picks', 'comeback', 'audience',
-    'isolation', 'comfort', 'past', 'being wrong', 'being alone', 'being broken'];
+  // Multi-word phrases = almost always specific and strong
+  if (core.split(/\s+/).length >= 3) return { score: 5, quality: 'strong' };
+
+  // Visual / concrete / filmable = strong
+  const strong = [
+    'weakness', 'excuses', 'silence', 'fraud', 'laziness', 'shame',
+    'mirror', 'reflection', 'mask', 'exit', 'record', 'picks', 'comeback',
+    'audience', 'isolation', 'comfort', 'scoreboard', 'replay', 'weigh-in',
+    'camera', 'microphone', 'cage', 'walk-in', 'entrance', 'bell',
+    'bag', 'sparring', 'alarm', 'couch', '5am', 'first round',
+    'last rep', 'first day', 'locker room', 'heavy bag', 'front row',
+    'spotlight', 'leaderboard', 'bracket', 'ranking', 'bluff',
+    'white towel', 'scar', 'stitches', 'x-ray', 'clock', 'receipt',
+    'signature', 'own skin', 'naked truth', 'own name', 'empty gym bag',
+    'alarm clock', 'name on the board', 'wrong calls', 'raw footage',
+    'uncut story', 'episode', 'beginner tag', 'day one',
+    'open mic', 'unscripted moment', 'starting weight', 'shirt off',
+    '3am thoughts', 'what-if', 'morning after', 'own bullshit',
+    'quit button', 'exit door', 'closed door', 'waiting list',
+    'safe choice', 'training partner', 'drill partner', 'old footage',
+    'second chance', 'public record', 'first session', 'live question',
+    'first sparring', 'first step', 'trigger', 'fire', 'chaos',
+    'open round', 'final bell', 'last round', 'empty corner',
+    'stats', 'average', 'numbers', 'tape',
+  ];
   if (strong.some(s => core.includes(s))) return { score: 5, quality: 'strong' };
 
-  // Multi-word = more specific = better
+  // Two-word phrases are usually good
   if (core.split(/\s+/).length >= 2) return { score: 4, quality: 'specific' };
 
   return { score: 3, quality: 'usable' };
