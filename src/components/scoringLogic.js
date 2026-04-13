@@ -126,21 +126,44 @@ function scorePillar(text, strongWords, weakWords) {
 
 // --- Pillar-specific feedback ---
 
+// Abstract fears that need to be converted to situations
+const ABSTRACT_FEARS = [
+  'being judged', 'not being enough', 'self-expression', 'not good enough',
+  'failure', 'rejection', 'judgment', 'vulnerability', 'being seen',
+  'being vulnerable', 'being real', 'being authentic', 'being honest',
+  'letting go', 'opening up', 'being myself', 'standing out',
+  'being different', 'not fitting in', 'not belonging',
+];
+
 function getFearFeedback(text, score) {
   const t = text.toLowerCase().trim();
-  if (!t) return { comment: 'No fear. No FYF.', fix: 'Where would someone hesitate before acting? Name that moment.' };
-  if (score >= 4) return { comment: 'Real. Situational. A person would pause before this.', fix: null };
-  if (FEAR_WEAK.some(w => t.includes(w))) return { comment: 'Too abstract. Where does this actually hurt?', fix: 'Replace the category with a specific moment where someone would hesitate.' };
-  if (t.split(/\s+/).length <= 2) return { comment: 'Too vague. This could mean anything to anyone.', fix: 'Make it situational. When and where does someone actually feel this?' };
-  return { comment: 'There\'s something here, but it\'s not sharp enough to make someone pause.', fix: 'Push toward a real situation. Where would someone hesitate before acting?' };
+  if (!t) return { comment: 'No fear. No FYF.', fix: 'Where exactly does this happen? Describe a moment you could film.' };
+
+  // Check if abstract — "Can this be filmed?"
+  const isAbstract = ABSTRACT_FEARS.some(af => t.includes(af)) || (t.split(/\s+/).length <= 3 && score <= 3);
+  if (isAbstract && score <= 3) {
+    return {
+      comment: 'Too abstract. If you cannot picture the moment, it is not the fear.',
+      fix: 'Where exactly does this happen? Describe a specific situation that could be filmed.',
+    };
+  }
+
+  if (score >= 4) return { comment: 'Situational and real. You can picture this moment.', fix: null };
+  if (FEAR_WEAK.some(w => t.includes(w))) return { comment: 'This is a category, not a fear. Where does this actually happen?', fix: 'Name a specific moment. Can this be filmed? If not, rewrite it.' };
+  return { comment: 'There\'s something here, but it\'s not sharp enough to film.', fix: 'Push toward a real moment. Where exactly does someone hesitate?' };
 }
 
 function getFacingFeedback(text, score) {
   const t = text.toLowerCase().trim();
   if (!t) return { comment: 'No facing. No exposure. No FYF.', fix: 'Where are they seen, judged, or unable to hide?' };
-  if (score >= 4) return { comment: 'Clear moment of exposure. They cannot hide here.', fix: null };
+  if (score >= 4) {
+    const exposureWords = ['public', 'seen', 'watched', 'judg', 'in front', 'camera', 'live', 'cage', 'ring', 'stage'];
+    const hasExposure = exposureWords.some(w => t.includes(w));
+    if (hasExposure) return { comment: 'Clear exposure. Unavoidable once entered.', fix: null };
+    return { comment: 'Real action, but is there exposure? Are they seen or judged?', fix: null };
+  }
   if (FACING_WEAK.some(w => t.includes(w))) return { comment: 'They can avoid this. This is not facing.', fix: 'Force exposure. Where are they seen, judged, or unable to hide?' };
-  return { comment: 'No exposure. No risk. This doesn\'t hold.', fix: 'Find the moment where they are seen or judged. Effort alone is not facing.' };
+  return { comment: 'No exposure. No risk. This doesn\'t hold.', fix: 'Effort alone is not facing. Where are they seen, judged, or unable to hide?' };
 }
 
 function getChangeFeedback(text, score) {
@@ -466,11 +489,11 @@ function realityCheck(project, fear, facing, change, fearScore, facingScore, cha
   } else if ((!fl && !facl) || (!fearReal && !facingReal) || fearScore <= 1 || facingScore <= 1) {
     verdict = 'BROKEN';
     verdictClass = 'broken';
-    explanation = issues[0] || 'No real fear or no real facing. The system does not hold.';
+    explanation = issues[0] || 'Abstract or avoidable. If you cannot picture the moment, it is not the fear.';
   } else {
     verdict = 'WEAK';
     verdictClass = 'weak-verdict';
-    explanation = issues[0] || 'Something is missing. The system does not fully hold.';
+    explanation = issues[0] || 'Still too abstract or avoidable. Push toward a real, filmable moment.';
   }
 
   return { verdict, verdictClass, explanation, issues };
