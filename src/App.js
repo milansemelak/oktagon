@@ -61,6 +61,9 @@ function App() {
           <ResultPanel result={result} onReset={handleReset} />
         </div>
       )}
+      <footer className="site-footer">
+        If you are lost call <a href="https://www.linkedin.com/in/milansemelak/" target="_blank" rel="noopener noreferrer">Milan Semelak</a>.
+      </footer>
     </div>
   );
 }

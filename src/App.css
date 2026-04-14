@@ -1123,6 +1123,25 @@ body {
   color: var(--accent);
 }
 
+/* --- Footer --- */
+.site-footer {
+  text-align: center;
+  padding: 48px 24px 32px;
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.site-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
 /* ========================================
    RESPONSIVE
    ======================================== */
